@@ -79,14 +79,40 @@ def preprocesar_texto(texto):
     texto = re.sub(r'\s+', ' ', texto).strip()
     return texto
 
+def find_dataset():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(script_dir, '..', 'dataset', 'Datos obtenidos.csv'),
+        os.path.join(script_dir, '..', 'dataset', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(script_dir, '..', 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(script_dir, 'Datos obtenidos.csv'),
+        os.path.join(script_dir, 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'dataset', 'Datos obtenidos.csv'),
+        os.path.join(os.getcwd(), 'dataset', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Datos obtenidos.csv'),
+        os.path.join(os.getcwd(), 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Proyecto', 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Proyecto', 'repo_segunda_entrega', 'dataset', 'Datos obtenidos.csv'),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return os.path.abspath(c)
+    raise FileNotFoundError(f"Dataset no encontrado en las rutas candidatas: {candidates}")
+
 def main():
-    os.makedirs('graphs', exist_ok=True)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.abspath(os.path.join(script_dir, '..'))
+    graphs_dir = os.path.join(repo_root, 'graphs')
+    os.makedirs(graphs_dir, exist_ok=True)
     
     print("="*75)
     print("1. CARGA DE DATOS Y CONSTRUCCIÓN DE PARTICIONES SIN FUGA DE DATOS")
     print("="*75)
 
-    df = pd.read_csv('reseñas_transmiapp_bogota.csv')
+    dataset_path = find_dataset()
+    print(f"Ruta dinámica del dataset: {dataset_path}")
+    df = pd.read_csv(dataset_path)
     print(f"Total registros cargados: {len(df)}")
     df['contenido_limpio'] = df['contenido'].apply(preprocesar_texto)
 
@@ -352,7 +378,7 @@ def main():
     fig.legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(0.5, 0.99), ncol=3, frameon=True)
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
-    plt.savefig('graphs/model_01_cv_comparison.png', dpi=300)
+    plt.savefig(os.path.join(graphs_dir, 'model_01_cv_comparison.png'), dpi=300)
     plt.close()
     print("-> Gráfica 7 guardada: graphs/model_01_cv_comparison.png")
 
@@ -382,7 +408,7 @@ def main():
             axes[i].set_ylabel('')
 
     plt.tight_layout()
-    plt.savefig('graphs/model_02_confusion_matrices.png', dpi=300)
+    plt.savefig(os.path.join(graphs_dir, 'model_02_confusion_matrices.png'), dpi=300)
     plt.close()
     print("-> Gráfica 8 guardada: graphs/model_02_confusion_matrices.png")
 
@@ -414,7 +440,7 @@ def main():
     plt.title('Curvas ROC Comparativas en Prueba Hold-out (Test 20%, N=1.219)', fontweight='bold')
     plt.legend(loc="lower right", fontsize=9, frameon=True)
     plt.tight_layout()
-    plt.savefig('graphs/model_03_roc_curves.png', dpi=300)
+    plt.savefig(os.path.join(graphs_dir, 'model_03_roc_curves.png'), dpi=300)
     plt.close()
     print("-> Gráfica 9 guardada: graphs/model_03_roc_curves.png")
 
@@ -438,7 +464,7 @@ def main():
     axes[1].set_title('B. Términos Determinantes en Detección de Elogios (Y=1)\n(Excelente, buena, muy útil, ayuda, gracias, genial)')
 
     plt.tight_layout()
-    plt.savefig('graphs/model_04_feature_importance.png', dpi=300)
+    plt.savefig(os.path.join(graphs_dir, 'model_04_feature_importance.png'), dpi=300)
     plt.close()
     print("-> Gráfica 10 guardada: graphs/model_04_feature_importance.png")
 
@@ -492,7 +518,7 @@ def main():
     axes[1].set_ylabel('Longitud en Palabras')
 
     plt.tight_layout()
-    plt.savefig('graphs/model_05_error_analysis.png', dpi=300)
+    plt.savefig(os.path.join(graphs_dir, 'model_05_error_analysis.png'), dpi=300)
     plt.close()
     print("-> Gráfica 11 guardada: graphs/model_05_error_analysis.png")
 

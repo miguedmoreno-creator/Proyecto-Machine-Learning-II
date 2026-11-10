@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta S23: SentiTransMilenio | Travesía Didáctica e Interactiva de Machine Learning</title>
+    <!-- Tipografías Oficiales -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Frameworks y Librerías CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Configuración Tailwind CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tm: {
+                            red: '#D62828',
+                            darkred: '#9B2226',
+                            amber: '#F77F00',
+                            yellow: '#FCBF49',
+                            blue: '#1D3557',
+                            teal: '#2A9D8F',
+                            dark: '#0B0F19',
+                            card: '#131B2E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+    <!-- Estilos Modulares de la Aplicación -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0B0F19] text-slate-100 overflow-hidden font-sans select-none">
+
+    <!-- ======================================================================= -->
+    <!-- 1. PANTALLA DE PRESENTACIÓN INICIAL (SPLASH SCREEN COMPACTA Y VISIBLE)  -->
+    <!-- ======================================================================= -->
+    <div id="splashScreen" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+        <div class="max-w-4xl w-full splash-modal-card rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl relative my-auto">
+            <!-- Franja Institucional TransMilenio -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-tm-red via-tm-amber to-tm-yellow rounded-t-3xl"></div>
+
+            <!-- Encabezado Institucional -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-tm-red/20 border border-tm-red/40 text-tm-yellow text-xs font-mono font-bold">
+                    <i class="fa-solid fa-bus"></i>
+                    <span>RUTA EXPRESA S23 · ENTREGA FINAL ML2</span>
+                </div>
+                <div class="text-xs font-mono text-slate-400">
+                    Universidad Externado de Colombia · Ciencia de Datos
+                </div>
+            </div>
+
+            <!-- Título Principal -->
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-heading font-black text-white tracking-tight leading-tight mb-2">
+                Senti<span class="text-tm-red">TransMilenio</span>: <span class="text-tm-yellow">La Travesía de la Voz Ciudadana</span>
+            </h1>
+
+            <!-- Storytelling Introductorio Conciso -->
+            <blockquote class="p-3 sm:p-4 rounded-xl bg-slate-900/90 border-l-4 border-tm-amber text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 italic shadow-inner">
+                "Detrás de cada calificación en <strong>TransMi[App]</strong> hay un bogotano esperando bajo la lluvia o agradeciendo llegar a tiempo. Transformamos <strong>6.089 reseñas reales</strong> en un sistema de IA explicable (SHAP) y calibrado que alerta quejas operativas en <strong>0.06 milisegundos</strong>."
+            </blockquote>
+
+            <!-- Autores y Docente -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-3.5">
+                <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-tm-red/20 border border-tm-red/40 flex items-center justify-center text-tm-red text-base font-bold shrink-0">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-400 block">Autor & ML Engineer</span>
+                        <span class="text-xs font-heading font-bold text-white">Santiago Sandoval</span>
+                    </div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-tm-amber/20 border border-tm-amber/40 flex items-center justify-center text-tm-amber text-base font-bold shrink-0">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-400 block">Autor & ML Engineer</span>
+                        <span class="text-xs font-heading font-bold text-white">Miguel David Moreno</span>
+                    </div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-tm-teal/20 border border-tm-teal/40 flex items-center justify-center text-tm-teal text-base font-bold shrink-0">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-400 block">Docente Titular</span>
+                        <span class="text-xs font-heading font-bold text-white">Prof. Wilmer Pineda</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles Didácticos Rápidos -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4 text-[11px] bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+                <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 rounded bg-slate-800 text-tm-yellow font-mono font-bold border border-slate-700">WASD / ⬅️➡️</span>
+                    <span class="text-slate-300">Conduce el biarticulado <strong>S23</strong>.</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 rounded bg-tm-red/30 text-white font-mono font-bold border border-tm-red">ESPACIO</span>
+                    <span class="text-slate-300">Entra a la <strong>Estación</strong> activa.</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 rounded bg-tm-amber/20 text-tm-amber font-mono font-bold border border-tm-amber/40">HOVER</span>
+                    <span class="text-slate-300">Explora <strong>obstáculos</strong> en la vía.</span>
+                </div>
+            </div>
+
+            <!-- Botón de Inicio Siempre Visible sin Desborde -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1 border-t border-white/10">
+                <div class="text-[11px] font-mono text-slate-400 flex items-center space-x-1.5">
+                    <i class="fa-solid fa-route text-tm-teal"></i>
+                    <span>Trayecto: <strong>Portal Dato Crudo</strong> ➔ <strong>Portal Inteligencia Ciudadana</strong></span>
+                </div>
+                <button onclick="GameModule.iniciarExperiencia()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-tm-red via-red-600 to-tm-amber hover:from-red-500 hover:to-amber-500 text-white font-heading font-extrabold text-sm tracking-wide shadow-lg shadow-tm-red/40 flex items-center justify-center space-x-2.5 transform hover:scale-[1.02] active:scale-95 transition cursor-pointer">
+                    <i class="fa-solid fa-id-card-clip text-base"></i>
+                    <span>VALIDAR PASAJE E INICIAR RUTA S23</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 2. HUD SUPERIOR: MAPA DE RUTA S23 Y ESTADO DEL VIAJE                    -->
+    <!-- ======================================================================= -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-[#0B0F19]/90 backdrop-blur-md border-b border-white/10 px-4 py-2">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <!-- Identificador de Línea -->
+            <div class="flex items-center space-x-2.5">
+                <button onclick="GameModule.mostrarSplash()" class="px-2.5 py-1 rounded-lg bg-tm-red hover:bg-red-700 text-white font-mono font-black text-xs shadow flex items-center space-x-1.5 transition" title="Portada">
+                    <i class="fa-solid fa-bus"></i>
+                    <span>S23</span>
+                </button>
+                <div class="hidden sm:block">
+                    <div class="text-xs font-heading font-bold text-white leading-none">Travesía SentiTransMilenio</div>
+                    <div class="text-[10px] font-mono text-tm-yellow">Haz clic en una estación para piloto automático o conduce con WASD / Flechas</div>
+                </div>
+            </div>
+
+            <!-- Esquema Troncal Dinámico -->
+            <div id="hudRouteMap" class="flex items-center space-x-1 overflow-x-auto py-0.5"></div>
+
+            <!-- Velocímetro y Gatillo de Estación -->
+            <div class="flex items-center space-x-2">
+                <span id="speedIndicator" class="hidden md:inline-block px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[11px] text-tm-teal">
+                    0 km/h
+                </span>
+                <button onclick="GameModule.abrirEstacionActualOIndice(GameModule.getCurrentNearestStation() ?? 0)" class="px-2.5 py-1 rounded-lg bg-tm-amber/20 hover:bg-tm-amber/30 text-tm-yellow border border-tm-amber/40 text-xs font-mono font-bold transition">
+                    <i class="fa-solid fa-door-open mr-1"></i> Estación [ESPACIO]
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- 3. MUNDO 2D INTERACTIVO (TRONCAL, ESTACIONES Y OBSTÁCULOS)               -->
+    <!-- ======================================================================= -->
+    <div id="gameViewport">
+        <div id="gameWorld">
+            <!-- Silueta de Montañas y Skyline -->
+            <div class="bogota-mountains"></div>
+            <!-- Capa Urbana de Fondo -->
+            <div id="sceneryLayer" class="absolute inset-0 pointer-events-none z-10"></div>
+            <!-- Andén Superior -->
+            <div class="sidewalk-top"></div>
+            <!-- Calzada Troncal Exclusiva + Carril Mixto -->
+            <div class="troncal-road">
+                <div class="lane-dashes-tm"></div>
+                <div class="lane-dashes-mixed"></div>
+                <div class="absolute top-[12%] left-[550px] text-white/20 font-heading font-black text-2xl tracking-widest">SOLO BUS S23</div>
+                <div class="absolute top-[12%] left-[1850px] text-white/20 font-heading font-black text-2xl tracking-widest">CARRIL EXCLUSIVO ML2</div>
+                <div class="absolute top-[12%] left-[3250px] text-white/20 font-heading font-black text-2xl tracking-widest">CERO FUGA DE DATOS</div>
+                <div class="absolute top-[12%] left-[4550px] text-white/20 font-heading font-black text-2xl tracking-widest">RECTA FINAL MLOps</div>
+            </div>
+            <!-- Andén Inferior -->
+            <div class="sidewalk-bottom"></div>
+            <!-- Capas Dinámicas -->
+            <div id="stationsLayer"></div>
+            <div id="obstaclesLayer"></div>
+
+            <!-- Personaje: Bus Biarticulado TransMilenio S23 -->
+            <div id="playerBus" style="left: 160px; top: 52%;">
+                <div class="bus-headlight-beam"></div>
+                <div class="bus-bounce w-full h-full relative">
+                    <svg viewBox="0 0 240 64" class="w-full h-full">
+                        <ellipse cx="120" cy="60" rx="112" ry="4" fill="rgba(0,0,0,0.55)"/>
+                        <rect x="6" y="8" width="96" height="44" rx="6" fill="#D62828" stroke="#FCA5A5" stroke-width="1.5"/>
+                        <rect x="6" y="38" width="96" height="6" fill="#F77F00"/>
+                        <rect x="100" y="10" width="18" height="40" fill="#475569" stroke="#1E293B" stroke-width="1"/>
+                        <line x1="104" y1="10" x2="104" y2="50" stroke="#94A3B8" stroke-width="1.5"/>
+                        <line x1="109" y1="10" x2="109" y2="50" stroke="#94A3B8" stroke-width="1.5"/>
+                        <line x1="114" y1="10" x2="114" y2="50" stroke="#94A3B8" stroke-width="1.5"/>
+                        <rect x="116" y="8" width="114" height="44" rx="8" fill="#D62828" stroke="#FCA5A5" stroke-width="1.5"/>
+                        <rect x="116" y="38" width="114" height="6" fill="#F77F00"/>
+                        <rect x="14" y="14" width="24" height="18" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+                        <rect x="42" y="14" width="24" height="18" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+                        <rect x="70" y="14" width="24" height="18" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+                        <rect x="124" y="14" width="26" height="18" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+                        <rect x="154" y="14" width="26" height="18" rx="3" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+                        <rect x="184" y="12" width="40" height="22" rx="4" fill="#0F172A" stroke="#FCD34D" stroke-width="1.5"/>
+                        <rect x="187" y="14" width="34" height="9" rx="2" fill="#111827"/>
+                        <text x="204" y="21" fill="#FBBF24" font-family="monospace" font-weight="bold" font-size="8" text-anchor="middle">S23 ML2</text>
+                        <text x="54" y="49" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="6.5" letter-spacing="0.5" text-anchor="middle">TRANSMILENIO</text>
+                        <text x="165" y="49" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="6.5" letter-spacing="0.5" text-anchor="middle">RUTA S23 · IA</text>
+                        <rect x="227" y="38" width="4" height="9" rx="2" fill="#FEF08A"/>
+                        <rect x="4" y="38" width="4" height="9" rx="2" fill="#EF4444"/>
+                        <circle cx="32" cy="52" r="8" fill="#0F172A" stroke="#94A3B8" stroke-width="2.5"/>
+                        <circle cx="82" cy="52" r="8" fill="#0F172A" stroke="#94A3B8" stroke-width="2.5"/>
+                        <circle cx="145" cy="52" r="8" fill="#0F172A" stroke="#94A3B8" stroke-width="2.5"/>
+                        <circle cx="202" cy="52" r="8" fill="#0F172A" stroke="#94A3B8" stroke-width="2.5"/>
+                    </svg>
+                </div>
+                <div id="busFloatingStatus" class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-0.5 rounded-full bg-slate-900/90 border border-tm-yellow/60 text-[10px] font-mono text-tm-yellow shadow-lg">
+                    🚌 S23 · Conduciendo
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooltip Flotante para Obstáculos en la Vía -->
+        <div id="obstacleTooltip" class="fixed z-40 hidden pointer-events-none max-w-sm bg-slate-950/95 backdrop-blur-xl border-2 border-tm-amber rounded-2xl p-3.5 shadow-2xl transition-all duration-150">
+            <div class="flex items-center space-x-2.5 mb-2">
+                <div id="obsTooltipIcon" class="w-8 h-8 rounded-lg bg-tm-amber/20 border border-tm-amber flex items-center justify-center text-base">⚠️</div>
+                <div>
+                    <span id="obsTooltipTag" class="text-[9px] font-mono uppercase tracking-wider text-tm-amber font-bold block">Obstáculo en el Proyecto</span>
+                    <h4 id="obsTooltipTitle" class="text-xs font-heading font-bold text-white leading-tight">Título</h4>
+                </div>
+            </div>
+            <div class="space-y-1.5 text-[11px]">
+                <div class="p-2 rounded-lg bg-red-950/40 border border-red-800/40 text-slate-200">
+                    <strong class="text-red-400 block mb-0.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Problema que enfrentamos:</strong>
+                    <span id="obsTooltipProblem"></span>
+                </div>
+                <div class="p-2 rounded-lg bg-emerald-950/40 border border-emerald-800/40 text-slate-200">
+                    <strong class="text-emerald-400 block mb-0.5"><i class="fa-solid fa-wrench mr-1"></i>Cómo lo superamos (ML2):</strong>
+                    <span id="obsTooltipSolution"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles en Pantalla Inferior (D-Pad Táctil y Banner Proximidad) -->
+        <div class="fixed bottom-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+            <div class="pointer-events-auto flex items-center space-x-1.5 bg-slate-950/85 backdrop-blur-md border border-white/15 p-1.5 rounded-xl shadow-xl">
+                <button onmousedown="GameModule.setTouchKey('left', true)" onmouseup="GameModule.setTouchKey('left', false)" onmouseleave="GameModule.setTouchKey('left', false)" ontouchstart="GameModule.setTouchKey('left', true)" ontouchend="GameModule.setTouchKey('left', false)" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-tm-red text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
+                </button>
+                <div class="flex flex-col space-y-1">
+                    <button onmousedown="GameModule.setTouchKey('up', true)" onmouseup="GameModule.setTouchKey('up', false)" onmouseleave="GameModule.setTouchKey('up', false)" ontouchstart="GameModule.setTouchKey('up', true)" ontouchend="GameModule.setTouchKey('up', false)" class="w-9 h-7 rounded bg-slate-800 hover:bg-slate-700 active:bg-tm-red text-white flex items-center justify-center transition">
+                        <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                    </button>
+                    <button onmousedown="GameModule.setTouchKey('down', true)" onmouseup="GameModule.setTouchKey('down', false)" onmouseleave="GameModule.setTouchKey('down', false)" ontouchstart="GameModule.setTouchKey('down', true)" ontouchend="GameModule.setTouchKey('down', false)" class="w-9 h-7 rounded bg-slate-800 hover:bg-slate-700 active:bg-tm-red text-white flex items-center justify-center transition">
+                        <i class="fa-solid fa-arrow-down text-[10px]"></i>
+                    </button>
+                </div>
+                <button onmousedown="GameModule.setTouchKey('right', true)" onmouseup="GameModule.setTouchKey('right', false)" onmouseleave="GameModule.setTouchKey('right', false)" ontouchstart="GameModule.setTouchKey('right', true)" ontouchend="GameModule.setTouchKey('right', false)" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-tm-red text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <div id="proximityBanner" class="pointer-events-auto bg-slate-950/90 backdrop-blur-md border-2 border-tm-yellow px-3.5 py-1.5 rounded-xl shadow-2xl flex items-center space-x-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-tm-yellow animate-ping"></span>
+                <span id="proximityText" class="text-xs font-heading font-bold text-white">Portal del Dato Crudo</span>
+                <button onclick="GameModule.abrirEstacionActualOIndice(GameModule.getCurrentNearestStation() ?? 0)" class="px-2.5 py-1 rounded-lg bg-tm-red hover:bg-red-600 text-white text-[11px] font-mono font-bold transition shadow">
+                    ESPACIO / Ver Contenido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 4. VENTANA FLOTANTE PRINCIPAL (MODAL DE ESTACIÓN Y DATA STORYTELLING)   -->
+    <!-- ======================================================================= -->
+    <div id="stationModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5">
+        <div class="bg-[#0F172A] border-2 border-white/15 rounded-2xl sm:rounded-3xl max-w-6xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Cabecera del Modal -->
+            <div class="bg-gradient-to-r from-tm-red via-red-800 to-slate-900 px-5 py-3.5 flex items-center justify-between border-b border-white/15">
+                <div class="flex items-center space-x-3">
+                    <div id="modalStationBadge" class="px-2.5 py-1 rounded-lg bg-black/40 border border-tm-yellow text-tm-yellow font-mono font-black text-xs">
+                        ESTACIÓN
+                    </div>
+                    <div>
+                        <span id="modalCharacterRole" class="text-[10px] font-mono uppercase tracking-wider text-amber-200 block">Personaje</span>
+                        <h2 id="modalStationTitle" class="text-lg sm:text-xl font-heading font-black text-white leading-tight">Título</h2>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-1.5">
+                    <button onclick="GameModule.navegarEstacionModal(-1)" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition" title="Anterior">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Ant
+                    </button>
+                    <button onclick="GameModule.navegarEstacionModal(1)" class="px-2.5 py-1 rounded-lg bg-tm-amber hover:bg-amber-500 text-slate-950 font-mono font-bold text-xs transition" title="Siguiente">
+                        Sig <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                    <button onclick="GameModule.cerrarModalEstacion()" class="w-8 h-8 rounded-lg bg-black/40 hover:bg-red-600 text-white flex items-center justify-center transition ml-1" title="Cerrar (ESC)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cuerpo Scrolleable de la Estación -->
+            <div id="modalStationBody" class="p-5 sm:p-6 overflow-y-auto custom-scroll space-y-5 text-slate-200">
+                <!-- Inyectado dinámicamente por StationsModule -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- 5. SCRIPTS MODULARES (SEPARACIÓN LIMPIA DE RESPONSABILIDADES)           -->
+    <!-- ======================================================================= -->
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/simulator.js"></script>
+    <script src="js/stations.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>

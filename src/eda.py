@@ -31,14 +31,41 @@ plt.rcParams['figure.titleweight'] = 'bold'
 PALETA_SENTIMIENTO = {0: '#E63946', 1: '#2A9D8F'}  # Rojo coral (Quejas), Verde azulado (Elogios)
 PALETA_ESTRELLAS = {1: '#D62828', 2: '#F77F00', 4: '#588157', 5: '#2A9D8F'}
 
-os.makedirs('graphs', exist_ok=True)
+# Helper de Reproducibilidad: Resolución Dinámica del Dataset
+def find_dataset():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(script_dir, '..', 'dataset', 'Datos obtenidos.csv'),
+        os.path.join(script_dir, '..', 'dataset', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(script_dir, '..', 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(script_dir, 'Datos obtenidos.csv'),
+        os.path.join(script_dir, 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'dataset', 'Datos obtenidos.csv'),
+        os.path.join(os.getcwd(), 'dataset', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Datos obtenidos.csv'),
+        os.path.join(os.getcwd(), 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Proyecto', 'datasets', 'reseñas_transmiapp_bogota.csv'),
+        os.path.join(os.getcwd(), 'Proyecto', 'repo_segunda_entrega', 'dataset', 'Datos obtenidos.csv'),
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return os.path.abspath(c)
+    raise FileNotFoundError(f"Dataset no encontrado en las rutas candidatas: {candidates}")
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(script_dir, '..'))
+graphs_dir = os.path.join(repo_root, 'graphs')
+os.makedirs(graphs_dir, exist_ok=True)
 
 # 1. Carga y verificación de calidad del dataset
 print("="*70)
 print("1. CARGA Y REVISIÓN DE INTEGRIDAD DE DATOS")
 print("="*70)
 
-df = pd.read_csv('reseñas_transmiapp_bogota.csv')
+dataset_file = find_dataset()
+print(f"Ruta dinámica del dataset: {dataset_file}")
+df = pd.read_csv(dataset_file)
 print(f"Total registros cargados: {df.shape[0]}")
 print(f"Total columnas: {df.shape[1]}")
 print(f"Columnas disponibles: {list(df.columns)}")
@@ -92,7 +119,7 @@ for bar in bars_s:
     axes[1].text(bar.get_x() + bar.get_width()/2, h + 50, f"{h:,}\n({pct:.1f}%)", ha='center', fontsize=9, fontweight='bold')
 
 plt.tight_layout()
-plt.savefig('graphs/eda_01_calidad_y_calificaciones.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_01_calidad_y_calificaciones.png'), dpi=300)
 plt.close()
 print("-> Gráfica 1 guardada: graphs/eda_01_calidad_y_calificaciones.png")
 
@@ -139,7 +166,7 @@ for container in axes[1].containers:
     axes[1].bar_label(container, fmt='%d', fontsize=8.5, fontweight='bold', padding=3)
 
 plt.tight_layout()
-plt.savefig('graphs/eda_02_desbalance_y_benchmark.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_02_desbalance_y_benchmark.png'), dpi=300)
 plt.close()
 print("-> Gráfica 2 guardada: graphs/eda_02_desbalance_y_benchmark.png")
 
@@ -171,7 +198,7 @@ axes[1].set_xlabel('')
 axes[1].set_title('B. Dispersión y Asimetría de Longitud (Boxplot)')
 
 plt.tight_layout()
-plt.savefig('graphs/eda_03_distribucion_longitud.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_03_distribucion_longitud.png'), dpi=300)
 plt.close()
 print("-> Gráfica 3 guardada: graphs/eda_03_distribucion_longitud.png")
 
@@ -194,7 +221,7 @@ sns.heatmap(corr_matrix_spearman, annot=True, fmt='.2f', cmap='vlag', vmin=-1, v
 axes[1].set_title('B. Correlación de Rangos de Spearman')
 
 plt.tight_layout()
-plt.savefig('graphs/eda_04_correlaciones_multivariadas.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_04_correlaciones_multivariadas.png'), dpi=300)
 plt.close()
 print("-> Gráfica 4 guardada: graphs/eda_04_correlaciones_multivariadas.png")
 
@@ -239,7 +266,7 @@ axes[1].axis('off')
 axes[1].set_title('B. Léxico Dominante en Elogios y Satisfacción (Y=1)\n(Excelente, buena, útil, ayuda, fácil, servicio)', fontsize=12)
 
 plt.tight_layout()
-plt.savefig('graphs/eda_05_wordclouds_sentimiento.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_05_wordclouds_sentimiento.png'), dpi=300)
 plt.close()
 print("-> Gráfica 5 guardada: graphs/eda_05_wordclouds_sentimiento.png")
 
@@ -290,7 +317,7 @@ axes[1, 1].set_title('D. Top 10 Bigramas en Elogios (Y=1)')
 axes[1, 1].set_xlabel('Frecuencia Absoluta')
 
 plt.tight_layout()
-plt.savefig('graphs/eda_06_top_ngrams.png', dpi=300)
+plt.savefig(os.path.join(graphs_dir, 'eda_06_top_ngrams.png'), dpi=300)
 plt.close()
 print("-> Gráfica 6 guardada: graphs/eda_06_top_ngrams.png")
 

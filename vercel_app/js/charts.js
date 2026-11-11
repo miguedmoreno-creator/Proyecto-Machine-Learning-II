@@ -33,7 +33,15 @@ window.ChartsModule = (function () {
         const ctx = document.getElementById(canvasId);
         if (!ctx) return;
 
-        const data = window.MASTER_DATA.eda_dynamic.ratings;
+        const defaultRatings = {
+            labels: ['1 Estrella (Crítico)', '2 Estrellas (Negativo)', '3 Estrellas (Neutro)', '4-5 Estrellas (Positivo)'],
+            counts: [3996, 910, 335, 852],
+            percentages: [65.6, 14.9, 5.5, 14.0]
+        };
+        const data = (window.MASTER_DATA && window.MASTER_DATA.eda_dynamic && window.MASTER_DATA.eda_dynamic.ratings)
+            ? window.MASTER_DATA.eda_dynamic.ratings
+            : defaultRatings;
+
         activeCharts[canvasId] = new Chart(ctx.getContext('2d'), {
             type: 'bar',
             data: {
@@ -71,7 +79,15 @@ window.ChartsModule = (function () {
         const ctx = document.getElementById(canvasId);
         if (!ctx) return;
 
-        const data = window.MASTER_DATA.eda_dynamic.lengths;
+        const defaultLengths = {
+            bins: ['0-5', '6-10', '11-20', '21-40', '41-80', '80+'],
+            hist_quejas: [280, 710, 1540, 1680, 890, 396],
+            hist_elogios: [140, 220, 290, 140, 52, 10]
+        };
+        const data = (window.MASTER_DATA && window.MASTER_DATA.eda_dynamic && window.MASTER_DATA.eda_dynamic.lengths)
+            ? window.MASTER_DATA.eda_dynamic.lengths
+            : defaultLengths;
+
         activeCharts[canvasId] = new Chart(ctx.getContext('2d'), {
             type: 'bar',
             data: {

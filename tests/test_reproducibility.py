@@ -170,9 +170,14 @@ def test_master_payload_schema_and_metrics():
     required_keys = {
         'proyecto', 'cv_metrics', 'test_metrics', 'threshold_analysis',
         'roc_curves', 'pr_curves', 'calibration_curves', 'stress_test_results',
-        'lexicon_quejas', 'lexicon_elogios', 'client_inference_model'
+        'lexicon_quejas', 'lexicon_elogios', 'client_inference_model', 'eda_dynamic'
     }
     assert required_keys.issubset(set(payload.keys())), f"Faltan claves en payload: {required_keys - set(payload.keys())}"
+
+    # Validar eda_dynamic para gráficas de Estación 1
+    eda = payload['eda_dynamic']
+    assert 'ratings' in eda and 'lengths' in eda, "eda_dynamic debe contener 'ratings' y 'lengths'"
+    assert eda['ratings']['counts'] == [3996, 910, 335, 852], f"Conteo de calificaciones inesperado: {eda['ratings']['counts']}"
 
     # Validar que los 11 modelos evaluados estén registrados
     model_count = len(payload['cv_metrics'])

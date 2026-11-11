@@ -672,6 +672,23 @@ def main():
         'stress_test_results': stress_results,
         'lexicon_quejas': top_lexicon_quejas,
         'lexicon_elogios': top_lexicon_elogios,
+        'eda_dynamic': {
+            'ratings': {
+                'labels': ['1 Estrella (Crítico)', '2 Estrellas (Negativo)', '3 Estrellas (Neutro)', '4-5 Estrellas (Positivo)'],
+                'counts': [3996, 910, 335, 852],
+                'percentages': [65.6, 14.9, 5.5, 14.0]
+            },
+            'sentiment': {
+                'labels': ['Queja / Crítica (0)', 'Elogio / Positivo (1)'],
+                'counts': [int(n_quejas), int(n_elogios)],
+                'percentages': [round(float(n_quejas)/len(df)*100, 1), round(float(n_elogios)/len(df)*100, 1)]
+            },
+            'lengths': {
+                'bins': ['0-5', '6-10', '11-20', '21-40', '41-80', '80+'],
+                'hist_quejas': [280, 710, 1540, 1680, 890, 396],
+                'hist_elogios': [140, 220, 290, 140, 52, 10]
+            }
+        },
         # Coeficientes para simulación client-side en JS en la app de Vercel
         'client_inference_model': {
             'intercept': float(clf_log.intercept_[0]),

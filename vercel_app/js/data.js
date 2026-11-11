@@ -10433,5 +10433,80 @@ window.MASTER_DATA = {
       "zonal": 0.08693241837442982,
       "zonales": -0.15730389275829493
     }
+  },
+  "eda_dynamic": {
+    "ratings": {
+      "labels": [
+        "1★ (Pésimo)",
+        "2★ (Malo)",
+        "4★ (Bueno)",
+        "5★ (Excelente)"
+      ],
+      "counts": [
+        3996,
+        910,
+        335,
+        852
+      ],
+      "percentages": [
+        65.6,
+        14.9,
+        5.5,
+        14.0
+      ]
+    },
+    "sentiment": {
+      "labels": [
+        "Quejas / Reclamos (Y=0)",
+        "Elogios / Satisfacción (Y=1)"
+      ],
+      "counts": [
+        4906,
+        1187
+      ],
+      "percentages": [
+        80.57,
+        19.43
+      ]
+    },
+    "lengths": {
+      "bins": [
+        "1-5",
+        "6-10",
+        "11-15",
+        "16-20",
+        "21-30",
+        "31-40",
+        "41-50",
+        "51-80",
+        "80+"
+      ],
+      "hist_quejas": [
+        509,
+        792,
+        767,
+        643,
+        1030,
+        514,
+        249,
+        313,
+        89
+      ],
+      "hist_elogios": [
+        352,
+        206,
+        184,
+        109,
+        127,
+        86,
+        44,
+        59,
+        19
+      ],
+      "quejas_median": 18,
+      "quejas_mean": 22.74,
+      "elogios_median": 11,
+      "elogios_mean": 17.36
+    }
   }
 };
